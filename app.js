@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -38,10 +39,11 @@ const usuario = require('./models/usuario');
 
 //mongodb+srv://admin:<password>@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority
 //mongodb+srv://admin:FGM2rjvyxZyYlejO@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority
+// si estoy en desarrollo usar localhost si no usar la base de produccion
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb+srv://admin:FGM2rjvyxZyYlejO@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority');
+  await mongoose.connect('process.env.MONGO_URI');
   
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
