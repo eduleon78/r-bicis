@@ -1,0 +1,33 @@
+extends ../layout 
+
+block content
+  br
+  a.btn.btn-dark(href='/') Inicio
+
+  br
+  br 
+  
+  table.table.table-striped.table-hover 
+    thead
+      tr
+        th(scope='col') #
+        th(scope='col') Nombre 
+        th(scope='col') Email 
+        th(scope='col') Verificado
+        th(scope='col') Edicion 
+        th(scope='col') Borado
+    tbody 
+      each usuario in usuarios
+        tr 
+          td(scope='row')
+            = usuario.id 
+          td= usuario.nombre
+          td= usuario.email 
+          td= usuario.verificado ? 'SI' : 'NO'
+          td 
+            a.btn.btn-primary(href='usuarios/' + usuario.id + '/update') Editar 
+          td
+            form.inline(method='post' action='usuarios/' + usuario.id + '/delete')
+              input(type='hidden' name='id' value= usuario.id)
+              button.link-button.btn-danger(type='submit' name='submit_param' value='submit_value' class='btn')
+                = 'Eliminar' 
