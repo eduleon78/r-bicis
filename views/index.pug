@@ -11,21 +11,25 @@ block content
       #navbarResponsive.collapse.navbar-collapse
         ul.navbar-nav.ms-auto
           li.nav-item
-            a.nav-link(href='#about') Acerca de
-          li.nav-item
             a.nav-link(href='#projects') Mapas 
           li.nav-item
             a.nav-link(href='/bicicletas') Bicicletas
-          li.nav-item
-            a.nav-link(href='/bicicletas/create') CrearBicicletas 
           li.nav-item
             a.nav-link(href='/usuarios') Usuarios
           li.nav-item
             a.nav-link(href='/usuarios/create') CrearUsuarios 
           li.nav-item
-            a.nav-link(href='/login') login
+            a.nav-link(href='/privacy_policy.html') Politica privacidad
           li.nav-item
-            a.nav-link(href='/logout') logout   
+            a.nav-link(href='/logout') otros 
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+              | Sesion 
+            ul.dropdown-menu
+              li
+                a.dropdown-item(href='/login') login 
+              li
+                a.dropdown-item(href='/logout') logout   
   // Masthead
   header.masthead
     .container.px-4.px-lg-5.d-flex.h-100.align-items-center.justify-content-center

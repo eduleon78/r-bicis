@@ -129,8 +129,6 @@ app.post('/resetPassword', function(req, res){
   });
 });
 
-
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/token', tokenRouter);
@@ -148,6 +146,8 @@ app.use('/privacy_policy', function(req, res){
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+app.use('/', indexRouter);
 
 // error handler
 app.use(function(err, req, res, next) {
