@@ -162,16 +162,14 @@ app.use('/google31dcdb96089a048f', function(req, res){
 });
 
 app.get('/auth/google',
-  passport.authenticate('google', { scope: [
-    'https://www.googleapis.com/auth/plus.login',
-    'https://www.googleapis.com/auth/plus.profile.emails.read',
-    'profile',
-    'email' ], }));
+  passport.authenticate('google', { scope: 
+    [ 'https://www.googleapis.com/auth/plus.login',
+    , 'https://www.googleapis.com/auth/plus.profile.emails.read' ] } ));
 
 app.get('/auth/google/callback', passport.authenticate( 'google', {
-        successRedirect: '/',
-        failureRedirect: '/error'
-  })
+      successRedirect: '/',
+      failureRedirect: '/error'
+    })
 );
 
 // catch 404 and forward to error handler
