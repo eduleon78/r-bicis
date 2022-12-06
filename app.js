@@ -39,6 +39,7 @@ const usuario = require('./models/usuario');
 
 //mongodb+srv://admin:<password>@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority
 //mongodb+srv://admin:FGM2rjvyxZyYlejO@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority
+//mongodb://[admin:FGM2rjvyxZyYlejO@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
 // si estoy en desarrollo usar localhost si no usar la base de produccion
 main().catch(err => console.log(err));
 
@@ -143,6 +144,11 @@ app.use('/api/usuarios', usuariosAPIRouter);
 app.use('/privacy_policy', function(req, res){
   res.sendFile('public/policy_privacy.html');
 });
+
+app.use('/google31dcdb96089a048f', function(req, res){
+  res.sendFile('public/google31dcdb96089a048f.html');
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
