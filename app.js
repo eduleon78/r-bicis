@@ -53,13 +53,21 @@ const usuario = require('./models/usuario');
 //mongodb+srv://admin:FGM2rjvyxZyYlejO@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority
 //mongodb://[admin:FGM2rjvyxZyYlejO@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
 // si estoy en desarrollo usar localhost si no usar la base de produccion
-main().catch(err => console.log(err));
+/* main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('process.env.MONGO_URI');
-  
+  await mongoose.connect('process.env.MONGO_URI');  
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
-}
+} */
+var mongoDB = process.env.MONGO_URI;
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.Promise = global.Promise;
+mongoose.connection.on(
+  "error", 
+  console.error.bind(console, "MongoDB connection error: ")
+);
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
