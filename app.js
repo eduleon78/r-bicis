@@ -62,6 +62,7 @@ async function main() {
 var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
+mongoose.set('strictQuery', true);
 mongoose.connection.on(
   "error", 
   console.error.bind(console, "MongoDB connection error: ")
