@@ -2,11 +2,43 @@ const Usuario = require('../../models/usuario');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 module.exports = {
+  authenticate: function (req, res, next) {
+    console.log(req.body)
+    Usuario.findOne({ email: req.body.email }, function (err, userInfo) {
+      if (err) {
+        return res.status(500).json( { message: err.message })
+      }
+      if (!userInfo) {
+        return res.status(404).json( { message: 'Usuario no encontrado.' })
+      }
+      if (!userInfo.validPassword(req.body.password)) {
+        return res.status(400).json( { message: 'Password Invalido.'})
+      }
+      const token = jwt.sign({ id:_userId }, req.app.get('secret-ket'), {expiresIn: '7d'})
+      res.status(200).json( { user: user, token: token })
+    });
+  },
+  forgotPassword: function (req, res, next) {
+    Usuario.findOne({ email: req.body.email }, function (err, usuario) {
+      if (err) {
+        return res.status(500).json( { message: err.message })
+      }
+      if (!usuario) {
+        return res.status(404).json( { message: 'Usuario no encontrado.' })
+      }
+
+      res.status(200).json({ message: "Email enviado" })
+    });
+  }
+}
+
+/* module.exports = {
   authenticate: function(req, res, next) {
-    Usuario.findOne({email:req.body.email}, function(err, userInfo){
-      if (err){
-        next(err);
+    Usuario.findOne({ email:req.body.email }, function (err, userInfo) {
+      if (err) {
+        next (err);
       } else {
         if (userInfo === null) { return res.status(401).json({status:"error", message: "Invalido email/password", data:null}); }                
         if(userInfo != null && bcrypt.compareSync(req.body.password, userInfo.password)) {
@@ -29,4 +61,4 @@ module.exports = {
         });               
       });
     },
-}
+}*/

@@ -10,7 +10,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+//var usersRouter = require('./routes/users');
 var usuariosRouter = require('./routes/usuarios');
 var tokenRouter = require('./routes/token');
 var bicicletasRouter = require('./routes/bicicletas');
@@ -36,7 +36,9 @@ if (process.env.NODE_ENV === 'development'){
 }
 
 var app = express();
+
 app.set('secretKey', 'jwt_pwd_!!2233');
+
 app.use(session({
   cookie: { maxAge: 240 * 60 * 60 * 1000 },
   store: store,
@@ -46,8 +48,6 @@ app.use(session({
 }));
 
 var mongoose = require('mongoose');
-
-const usuario = require('./models/usuario');
 
 //mongodb+srv://admin:<password>@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority
 //mongodb+srv://admin:FGM2rjvyxZyYlejO@r-bicis.f5yt5o2.mongodb.net/?retryWrites=true&w=majority
@@ -60,15 +60,18 @@ async function main() {
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 } */
 var mongoDB = process.env.MONGO_URI;
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoDB, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+})
+  .catch(err => console.log(err))
+  
 mongoose.Promise = global.Promise;
-mongoose.set('strictQuery', true);
-mongoose.connection.on(
-  "error", 
+mongoose.set('strictQuery', false);
+mongoose.connection.on( "error", err => {
   console.error.bind(console, "MongoDB connection error: ")
+} 
 );
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -151,9 +154,8 @@ app.post('/resetPassword', function(req, res){
   });
 });
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/usuarios', usuariosRouter);
+//app.use('/users', usersRouter);
+app.use('/usuarios', loggedIn, usuariosRouter);
 app.use('/token', tokenRouter);
 
 app.use('/bicicletas', loggedIn, bicicletasRouter);
@@ -161,6 +163,8 @@ app.use('/bicicletas', loggedIn, bicicletasRouter);
 app.use('/api/auth', authAPIRouter);
 app.use('/api/bicicletas', validarUsuario, bicicletasAPIRouter);
 app.use('/api/usuarios', usuariosAPIRouter);
+
+app.use('/', indexRouter);
 
 app.use('/privacy_policy', function(req, res){
   res.sendFile('public/policy_privacy.html');
