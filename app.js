@@ -10,7 +10,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/users');
 var usuariosRouter = require('./routes/usuarios');
 var tokenRouter = require('./routes/token');
 var bicicletasRouter = require('./routes/bicicletas');
@@ -65,7 +65,7 @@ mongoose.connect(mongoDB, {
   useUnifiedTopology: true, 
 })
   .catch(err => console.log(err))
-  
+
 mongoose.Promise = global.Promise;
 mongoose.set('strictQuery', false);
 mongoose.connection.on( "error", err => {
@@ -154,7 +154,7 @@ app.post('/resetPassword', function(req, res){
   });
 });
 
-//app.use('/users', usersRouter);
+app.use('/users', usersRouter);
 app.use('/usuarios', loggedIn, usuariosRouter);
 app.use('/token', tokenRouter);
 
