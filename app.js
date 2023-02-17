@@ -63,15 +63,14 @@ var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { 
   useNewUrlParser: true, 
   useUnifiedTopology: true, 
-})
-  .catch(err => console.log(err))
-
+});
 mongoose.Promise = global.Promise;
 mongoose.set('strictQuery', false);
-mongoose.connection.on( "error", err => {
+mongoose.connection.on(
+  "error",
   console.error.bind(console, "MongoDB connection error: ")
-} 
 );
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -95,7 +94,7 @@ app.post('/login', function(req, res, next) {
     if (!usuario) return res.render('session/login', {info});
     req.logIn(usuario, function(err) {
       if (err) return next(err);
-      return res.redirect('/bicicletas');
+      return res.redirect('/');
     });
   })(req, res, next);
 });
@@ -117,9 +116,9 @@ app.post('/forgotPassword', function(req, res) {
   Usuario.findOne({ email: req.body.email }, function (err, usuario) {
     if (!usuario) return res.render('session/forgotPassword', {info: {message: 'No existe el email para el usuario existente. '}});
 
-    usuario.resetPassword(function(err){
+      usuario.resetPassword(function(err){
       if (err) return next(err);
-      console.log('session/forgotPasswordeMessage');
+      console.log('session/forgotPasswordMessage');
     });
     res.render('session/forgotPasswordMessage');
   });
@@ -149,8 +148,7 @@ app.post('/resetPassword', function(req, res){
         res.render('session/resetPassword', {errors: err.errors, usuario: new Usuario({email: req.body.email})});
       }else{
         res.redirect('/login');
-      }
-    });
+    }});
   });
 });
 
